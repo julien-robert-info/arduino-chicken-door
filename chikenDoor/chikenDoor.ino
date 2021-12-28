@@ -10,14 +10,23 @@
 #define STBY 3
 #define AIN1 4
 #define AIN2 5
+//Motor current
+#define MOT A2
 
 RTC_DS3231 rtc;
 AT24Cxx nvram(at24Address, at24Size);
+
+int motor_current;
+unsigned long drive_start;
+unsigned long blocking_start;
+int blocking_delai = 150;
+int blocking_current = 350;
 
 void setup() {
   pinMode(STBY, OUTPUT);
   pinMode(AIN1, OUTPUT);
   pinMode(AIN2, OUTPUT);
+  pinMode(MOT, INPUT);
   pinMode(SQW, INPUT_PULLUP);
   interrupts();
 
@@ -36,7 +45,7 @@ void loop() {
   set_alarm(nextAlarm);
 
   //move door
-  motorDrive(now.isPM(), 2500);
+  motorDrive(!nextAlarm.isPM(), 2500);
   
   sleepPwrDown();
 }
@@ -84,6 +93,27 @@ void motorDrive(boolean direction, int duration){
       digitalWrite(AIN2, HIGH);
       break;
   }
-  delay(duration);
+  drive_start = millis();
+
+  //anti blocking protection
+  do {    
+    motor_current = analogRead(MOT);
+    
+    if (motor_current < blocking_current) {
+        blocking_start = millis();
+    }    
+    if((millis() - drive_start) > duration){
+      Serial.println("delai max dépassé");
+    }
+    if((millis() - blocking_start) > blocking_delai){
+      Serial.println("delai blocage dépassé");
+    }
+  } while ((millis() - drive_start) < duration && ((millis() - blocking_start) < blocking_delai));
+  motorStop();
+}
+
+void motorStop(){
   digitalWrite(STBY, LOW);
+  digitalWrite(AIN1, LOW);
+  digitalWrite(AIN2, LOW);
 }

@@ -23,6 +23,7 @@ Minimalist automated chicken door with Arduino nano
 
 ### Arduino
 
+- A2: TB6612FNG GND
 - A4: DS3231 SDA
 - A5: DS3231 SCL
 - D2: DS3231 SQW
@@ -33,7 +34,7 @@ Minimalist automated chicken door with Arduino nano
 ### HLK-10M05
 
 - +vo: DS3231 VCC, TB6612FNG VM, Arduino 5V
-- -vo: each components GND
+- -vo: DS3231 GND, Arduino GND, 10 ohm resistor to TB6612FNG GND
 
 ---
 
