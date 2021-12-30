@@ -20,7 +20,8 @@ int motor_current;
 unsigned long drive_start;
 unsigned long blocking_start;
 int blocking_delai = 150;
-int blocking_current = 350;
+int blocking_current = 500;
+int max_drive_delai = 15000;
 
 void setup() {
   pinMode(STBY, OUTPUT);
@@ -45,7 +46,7 @@ void loop() {
   set_alarm(nextAlarm);
 
   //move door
-  motorDrive(!nextAlarm.isPM(), 2500);
+  motorDrive(!nextAlarm.isPM(), max_drive_delai);
   
   sleepPwrDown();
 }
@@ -85,12 +86,12 @@ void motorDrive(boolean direction, int duration){
   digitalWrite(STBY, HIGH);
   switch (direction) {
     case 0 : //up
-      digitalWrite(AIN1, HIGH);
-      digitalWrite(AIN2, LOW);
-      break;
-    case 1 : //down
       digitalWrite(AIN1, LOW);
       digitalWrite(AIN2, HIGH);
+      break;
+    case 1 : //down
+      digitalWrite(AIN1, HIGH);
+      digitalWrite(AIN2, LOW);
       break;
   }
   drive_start = millis();
