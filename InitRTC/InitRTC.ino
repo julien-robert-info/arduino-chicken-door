@@ -22,18 +22,18 @@ void setup() {
 
   //alarm calendar settings (am and pm for each month)
   struct calendarAlarmStruc monthlyCalendarAlarm[monthCount] = {
-    {DateTime(0, 0, 0, 8, 45, 0), DateTime(0, 0, 0, 18, 05, 0)},
-    {DateTime(0, 0, 0, 8, 05, 0), DateTime(0, 0, 0, 18, 50, 0)},
-    {DateTime(0, 0, 0, 7, 10, 0), DateTime(0, 0, 0, 19, 35, 0)},
-    {DateTime(0, 0, 0, 6, 10, 0), DateTime(0, 0, 0, 20, 20, 0)},
-    {DateTime(0, 0, 0, 5, 50, 0), DateTime(0, 0, 0, 20, 00, 0)},
-    {DateTime(0, 0, 0, 5, 00, 0), DateTime(0, 0, 0, 21, 30, 0)},
-    {DateTime(0, 0, 0, 5, 15, 0), DateTime(0, 0, 0, 21, 25, 0)},
-    {DateTime(0, 0, 0, 5, 55, 0), DateTime(0, 0, 0, 20, 40, 0)},
-    {DateTime(0, 0, 0, 6, 35, 0), DateTime(0, 0, 0, 19, 40, 0)},
-    {DateTime(0, 0, 0, 7, 20, 0), DateTime(0, 0, 0, 18, 40, 0)},
-    {DateTime(0, 0, 0, 8, 05, 0), DateTime(0, 0, 0, 17, 50, 0)},
-    {DateTime(0, 0, 0, 8, 40, 0), DateTime(0, 0, 0, 17, 40, 0)},
+    {DateTime(0, 0, 0, 8, 15, 0), DateTime(0, 0, 0, 18, 35, 0)},
+    {DateTime(0, 0, 0, 7, 35, 0), DateTime(0, 0, 0, 19, 20, 0)},
+    {DateTime(0, 0, 0, 6, 40, 0), DateTime(0, 0, 0, 20, 05, 0)},
+    {DateTime(0, 0, 0, 5, 40, 0), DateTime(0, 0, 0, 20, 50, 0)},
+    {DateTime(0, 0, 0, 5, 20, 0), DateTime(0, 0, 0, 20, 30, 0)},
+    {DateTime(0, 0, 0, 4, 30, 0), DateTime(0, 0, 0, 22, 00, 0)},
+    {DateTime(0, 0, 0, 4, 45, 0), DateTime(0, 0, 0, 21, 55, 0)},
+    {DateTime(0, 0, 0, 5, 25, 0), DateTime(0, 0, 0, 21, 10, 0)},
+    {DateTime(0, 0, 0, 6, 05, 0), DateTime(0, 0, 0, 20, 10, 0)},
+    {DateTime(0, 0, 0, 6, 50, 0), DateTime(0, 0, 0, 19, 10, 0)},
+    {DateTime(0, 0, 0, 7, 35, 0), DateTime(0, 0, 0, 18, 20, 0)},
+    {DateTime(0, 0, 0, 8, 10, 0), DateTime(0, 0, 0, 18, 10, 0)},
   };
 
   //alarm calendar writting into nvram
