@@ -38,12 +38,10 @@ void setup() {
 
   //alarm calendar writting into nvram
   for(int i = 0; i < monthCount; i++){
-    address = i * 4;
-
-    nvram.write(address, monthlyCalendarAlarm[i].am.hour());
-    nvram.write(address + 1, monthlyCalendarAlarm[i].am.minute());
-    nvram.write(address + 2, monthlyCalendarAlarm[i].pm.hour());
-    nvram.write(address + 3, monthlyCalendarAlarm[i].pm.minute());
+    DateTime AmAlarm = DateTime(0, 0, 0, monthlyCalendarAlarm[i].am.hour(), monthlyCalendarAlarm[i].am.minute(), 0);
+    DateTime PmAlarm = DateTime(0, 0, 0, monthlyCalendarAlarm[i].pm.hour(), monthlyCalendarAlarm[i].pm.minute(), 0);
+    set_alarm_into_nvram(AmAlarm, i, 0);
+    set_alarm_into_nvram(PmAlarm, i, 1);
   }
 }
 
@@ -54,9 +52,7 @@ void loop() {
   Serial.print(now.month(), DEC);
   Serial.print('/');
   Serial.print(now.day(), DEC);
-  Serial.print(" (");
-  Serial.print(daysOfTheWeek[now.dayOfTheWeek()]);
-  Serial.print(") ");
+  Serial.print(" ");
   Serial.print(now.hour(), DEC);
   Serial.print(':');
   Serial.print(now.minute(), DEC);
@@ -66,19 +62,38 @@ void loop() {
 
   Serial.println("\nMonthly alarm calendar : ");
   for(int i = 0; i < monthCount; i++){
-    address = i * 4;
+    DateTime AmAlarm = get_alarm_from_nvram(i, 0);
+    DateTime PmAlarm = get_alarm_from_nvram(i, 1);
 
     Serial.print("Month : ");
     Serial.print(i + 1);
     Serial.print(" am : ");
-    Serial.print(nvram.read(address));
+    Serial.print(AmAlarm.hour(), DEC);
     Serial.print(":");
-    Serial.print(nvram.read(address + 1));
+    Serial.print(AmAlarm.minute(), DEC);
     Serial.print(", pm : ");
-    Serial.print(nvram.read(address + 2));
+    Serial.print(PmAlarm.hour(), DEC);
     Serial.print(":");
-    Serial.println(nvram.read(address + 3));
+    Serial.println(PmAlarm.minute(), DEC);
   }
 
   delay(5000);
+}
+
+// get monthly alarm record from AT24C32
+DateTime get_alarm_from_nvram(int month, int isPm){
+  int address = month * 4;
+  int offset = isPm * 2;
+  int hour = nvram.read(address + offset);
+  int minute = nvram.read(address + offset + 1);
+
+  return DateTime(0, 0, 0, hour, minute, 0);
+}
+
+// set monthly alarm record into AT24C32
+void set_alarm_into_nvram(DateTime alarmTime, int month, int isPm){
+  int address = month * 4;
+  int offset = isPm * 2;
+  nvram.write(address + offset, alarmTime.hour());
+  nvram.write(address + offset + 1, alarmTime.minute());
 }

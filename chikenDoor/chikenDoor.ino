@@ -19,8 +19,8 @@ AT24Cxx nvram(at24Address, at24Size);
 int motor_current;
 unsigned long drive_start;
 unsigned long blocking_start;
-int blocking_delai = 150;
-int blocking_current = 500;
+int blocking_delai = 200;
+int blocking_current = 450;
 int max_drive_delai = 15000;
 
 void setup() {
@@ -41,11 +41,9 @@ void setup() {
 
 void loop() {
   DateTime now = rtc.now();
-  
   DateTime nextAlarm = get_alarm_from_nvram(now.month(), !now.isPM());
   set_alarm(nextAlarm);
 
-  //move door
   motorDrive(!nextAlarm.isPM(), max_drive_delai);
   
   sleepPwrDown();
@@ -61,7 +59,7 @@ void set_alarm(DateTime alarmTime)
 
 // get monthly alarm record from AT24C32
 DateTime get_alarm_from_nvram(int month, int isPm){
-  int address = month * 4;
+  int address = (month - 1) * 4;
   int offset = isPm * 2;
   int hour = nvram.read(address + offset);
   int minute = nvram.read(address + offset + 1);
@@ -86,12 +84,12 @@ void motorDrive(boolean direction, int duration){
   digitalWrite(STBY, HIGH);
   switch (direction) {
     case 0 : //up
-      digitalWrite(AIN1, LOW);
-      digitalWrite(AIN2, HIGH);
-      break;
-    case 1 : //down
       digitalWrite(AIN1, HIGH);
       digitalWrite(AIN2, LOW);
+      break;
+    case 1 : //down
+      digitalWrite(AIN1, LOW);
+      digitalWrite(AIN2, HIGH);
       break;
   }
   drive_start = millis();
@@ -102,12 +100,6 @@ void motorDrive(boolean direction, int duration){
     
     if (motor_current < blocking_current) {
         blocking_start = millis();
-    }    
-    if((millis() - drive_start) > duration){
-      Serial.println("delai max dépassé");
-    }
-    if((millis() - blocking_start) > blocking_delai){
-      Serial.println("delai blocage dépassé");
     }
   } while ((millis() - drive_start) < duration && ((millis() - blocking_start) < blocking_delai));
   motorStop();
