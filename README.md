@@ -2,39 +2,39 @@
 
 Minimalist automated chicken door with Arduino nano
 
-- 220V AC power supply
-- Opening and closing time are defined in a monthly calendar recorded in the RTC module memory
+-   220V AC power supply
+-   Opening and closing time are defined in a monthly calendar recorded in the RTC module memory
 
 ---
 
 ## Required Components
 
-- Arduino nano
-- power supply: HLK-10M05
-- RTC module: DS3231
-- motor driver: TB6612FNG
-- motor: 1:90 TT DC Gear Motor
+-   Arduino nano
+-   power supply: HLK-10M05
+-   RTC module: DS3231
+-   motor driver: TB6612FNG
+-   motor: 1:90 TT DC Gear Motor
 
 ---
 
 ## pin mapping
 
-- Motor connected to TB6612FNG AO1 and AO2
+-   Motor connected to TB6612FNG AO1 and AO2
 
 ### Arduino
 
-- A2: TB6612FNG GND
-- A4: DS3231 SDA
-- A5: DS3231 SCL
-- D2: DS3231 SQW
-- D3: TB6612FNG AIN2
-- D4: TB6612FNG AIN1
-- D5: TB6612FNG STBY
+-   A2: TB6612FNG GND
+-   A4: DS3231 SDA
+-   A5: DS3231 SCL
+-   D2: DS3231 SQW
+-   D3: TB6612FNG AIN2
+-   D4: TB6612FNG AIN1
+-   D5: TB6612FNG STBY
 
 ### HLK-10M05
 
-- +vo: DS3231 VCC, TB6612FNG VM, Arduino 5V
-- -vo: DS3231 GND, Arduino GND, 10 ohm resistor to TB6612FNG GND
+-   +vo: DS3231 VCC, TB6612FNG VM, Arduino 5V
+-   -vo: DS3231 GND, Arduino GND, 10 ohm resistor to TB6612FNG GND
 
 ---
 
@@ -79,7 +79,15 @@ Then you can load the chickenDoor.ino file in the arduino.
 
 ---
 
+## Used library
+
+-   [AT24Cxx](https://github.com/cvmanjoo/)
+-   [ds3231FS](https://github.com/Jorropo/ds3231)
+-   [RTClib](https://github.com/adafruit/RTClib)
+
+---
+
 ## inspirations
 
-- [http://seb.lobo.pagesperso-orange.fr/Porte-poulailler/motorisation-porte-eco.html](http://seb.lobo.pagesperso-orange.fr/Porte-poulailler/motorisation-porte-eco.html)
-- [http://moncastel.free.fr/forum/trappePoule/](http://moncastel.free.fr/forum/trappePoule/)
+-   [http://seb.lobo.pagesperso-orange.fr/Porte-poulailler/motorisation-porte-eco.html](http://seb.lobo.pagesperso-orange.fr/Porte-poulailler/motorisation-porte-eco.html)
+-   [http://moncastel.free.fr/forum/trappePoule/](http://moncastel.free.fr/forum/trappePoule/)
