@@ -8,36 +8,39 @@ AT24Cxx nvram(at24Address, at24Size);
 RTC_DS3231 rtc;
 int address;
 
-struct calendarAlarmStruc {
+struct calendarAlarmStruc
+{
   DateTime am;
   DateTime pm;
 };
 
-void setup() {
+void setup()
+{
   Serial.begin(9600);
   rtc.begin();
 
   // set time (format : year, month, day of month, h, m, s)
-  //rtc.adjust(DateTime(2021, 11, 26, 17, 33, 0));
+  // rtc.adjust(DateTime(2021, 11, 26, 17, 33, 0));
 
-  //alarm calendar settings (am and pm for each month)
+  // alarm calendar settings (am and pm for each month)
   struct calendarAlarmStruc monthlyCalendarAlarm[monthCount] = {
-    {DateTime(0, 0, 0, 8, 15, 0), DateTime(0, 0, 0, 18, 35, 0)},
-    {DateTime(0, 0, 0, 7, 35, 0), DateTime(0, 0, 0, 19, 20, 0)},
-    {DateTime(0, 0, 0, 6, 40, 0), DateTime(0, 0, 0, 20, 05, 0)},
-    {DateTime(0, 0, 0, 5, 40, 0), DateTime(0, 0, 0, 20, 50, 0)},
-    {DateTime(0, 0, 0, 5, 20, 0), DateTime(0, 0, 0, 20, 30, 0)},
-    {DateTime(0, 0, 0, 4, 30, 0), DateTime(0, 0, 0, 22, 00, 0)},
-    {DateTime(0, 0, 0, 4, 45, 0), DateTime(0, 0, 0, 21, 55, 0)},
-    {DateTime(0, 0, 0, 5, 25, 0), DateTime(0, 0, 0, 21, 10, 0)},
-    {DateTime(0, 0, 0, 6, 05, 0), DateTime(0, 0, 0, 20, 10, 0)},
-    {DateTime(0, 0, 0, 6, 50, 0), DateTime(0, 0, 0, 19, 10, 0)},
-    {DateTime(0, 0, 0, 7, 35, 0), DateTime(0, 0, 0, 18, 20, 0)},
-    {DateTime(0, 0, 0, 8, 10, 0), DateTime(0, 0, 0, 18, 10, 0)},
+      {DateTime(0, 0, 0, 8, 45, 0), DateTime(0, 0, 0, 17, 35, 0)},
+      {DateTime(0, 0, 0, 8, 05, 0), DateTime(0, 0, 0, 18, 20, 0)},
+      {DateTime(0, 0, 0, 7, 10, 0), DateTime(0, 0, 0, 19, 05, 0)},
+      {DateTime(0, 0, 0, 6, 10, 0), DateTime(0, 0, 0, 19, 50, 0)},
+      {DateTime(0, 0, 0, 5, 20, 0), DateTime(0, 0, 0, 20, 30, 0)},
+      {DateTime(0, 0, 0, 5, 00, 0), DateTime(0, 0, 0, 21, 00, 0)},
+      {DateTime(0, 0, 0, 5, 15, 0), DateTime(0, 0, 0, 20, 55, 0)},
+      {DateTime(0, 0, 0, 5, 55, 0), DateTime(0, 0, 0, 20, 15, 0)},
+      {DateTime(0, 0, 0, 6, 35, 0), DateTime(0, 0, 0, 19, 10, 0)},
+      {DateTime(0, 0, 0, 7, 20, 0), DateTime(0, 0, 0, 18, 10, 0)},
+      {DateTime(0, 0, 0, 8, 05, 0), DateTime(0, 0, 0, 17, 20, 0)},
+      {DateTime(0, 0, 0, 8, 40, 0), DateTime(0, 0, 0, 17, 05, 0)},
   };
 
-  //alarm calendar writting into nvram
-  for(int i = 0; i < monthCount; i++){
+  // alarm calendar writting into nvram
+  for (int i = 0; i < monthCount; i++)
+  {
     DateTime AmAlarm = DateTime(0, 0, 0, monthlyCalendarAlarm[i].am.hour(), monthlyCalendarAlarm[i].am.minute(), 0);
     DateTime PmAlarm = DateTime(0, 0, 0, monthlyCalendarAlarm[i].pm.hour(), monthlyCalendarAlarm[i].pm.minute(), 0);
     set_alarm_into_nvram(AmAlarm, i, 0);
@@ -45,8 +48,9 @@ void setup() {
   }
 }
 
-void loop() {
-  DateTime now = rtc.now();  // Get current time
+void loop()
+{
+  DateTime now = rtc.now(); // Get current time
   Serial.print(now.year(), DEC);
   Serial.print('/');
   Serial.print(now.month(), DEC);
@@ -61,7 +65,8 @@ void loop() {
   Serial.println();
 
   Serial.println("\nMonthly alarm calendar : ");
-  for(int i = 0; i < monthCount; i++){
+  for (int i = 0; i < monthCount; i++)
+  {
     DateTime AmAlarm = get_alarm_from_nvram(i, 0);
     DateTime PmAlarm = get_alarm_from_nvram(i, 1);
 
@@ -81,7 +86,8 @@ void loop() {
 }
 
 // get monthly alarm record from AT24C32
-DateTime get_alarm_from_nvram(int month, int isPm){
+DateTime get_alarm_from_nvram(int month, int isPm)
+{
   int address = month * 4;
   int offset = isPm * 2;
   int hour = nvram.read(address + offset);
@@ -91,7 +97,8 @@ DateTime get_alarm_from_nvram(int month, int isPm){
 }
 
 // set monthly alarm record into AT24C32
-void set_alarm_into_nvram(DateTime alarmTime, int month, int isPm){
+void set_alarm_into_nvram(DateTime alarmTime, int month, int isPm)
+{
   int address = month * 4;
   int offset = isPm * 2;
   nvram.write(address + offset, alarmTime.hour());
