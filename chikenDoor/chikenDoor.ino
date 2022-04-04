@@ -25,6 +25,7 @@ int max_drive_delai = 15000;
 
 void setup()
 {
+  pinMode(LED_BUILTIN, OUTPUT);
   pinMode(STBY, OUTPUT);
   pinMode(AIN1, OUTPUT);
   pinMode(AIN2, OUTPUT);
@@ -38,10 +39,15 @@ void setup()
   rtc.disableAlarm(2);
   rtc.disable32K();
   rtc.writeSqwPinMode(DS3231_OFF); // Place SQW pin into alarm interrupt mode
+  digitalWrite(LED_BUILTIN, LOW);
 }
 
 void loop()
 {
+  if (rtc.lostPower())
+  {
+    digitalWrite(LED_BUILTIN, HIGH);
+  }
   DateTime nextAlarm = get_next_alarm_from_nvram();
   set_alarm(nextAlarm);
 
