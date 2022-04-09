@@ -48,6 +48,7 @@ void loop()
   {
     digitalWrite(LED_BUILTIN, HIGH);
   }
+
   DateTime nextAlarm = get_next_alarm_from_nvram();
   set_alarm(nextAlarm);
 
