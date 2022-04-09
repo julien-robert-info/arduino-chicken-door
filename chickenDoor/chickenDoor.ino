@@ -69,7 +69,7 @@ DateTime get_next_alarm_from_nvram(void)
 
   TimeSpan ts1 = DateTime(now.year(), now.month(), now.day(), hour, minute, 0) - now;
 
-  if (ts1.totalseconds() < 0)
+  if (ts1.totalseconds() <= 0)
   {
     offset = !now.isPM() * 2;
     hour = nvram.read(address + offset);
